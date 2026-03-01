@@ -21,8 +21,21 @@ set -euo pipefail
 # - A conda env with downloader deps, default name: IMERG_download_env
 # - Valid NASA Earthdata ~/.netrc on the compute node filesystem
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+SCRIPT_PATH="$(realpath "${BASH_SOURCE[0]}")"
+SCRIPT_DIR="$(cd "$(dirname "$SCRIPT_PATH")" && pwd)"
+DEFAULT_REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+
+# Prefer explicit REPO_ROOT, then SLURM_SUBMIT_DIR when it looks like repo root,
+# otherwise fall back to script-relative resolution.
+if [[ -n "${REPO_ROOT:-}" ]]; then
+  REPO_ROOT="$REPO_ROOT"
+elif [[ -n "${SLURM_SUBMIT_DIR:-}" && -f "${SLURM_SUBMIT_DIR}/download_preprocess_IMERG_for_RainyDay.py" ]]; then
+  REPO_ROOT="$SLURM_SUBMIT_DIR"
+else
+  REPO_ROOT="$DEFAULT_REPO_ROOT"
+fi
+
+REPO_ROOT="$(realpath "$REPO_ROOT")"
 LOG_DIR="$REPO_ROOT/logs"
 mkdir -p "$LOG_DIR"
 
