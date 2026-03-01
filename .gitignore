@@ -1,0 +1,6 @@
+output/
+imerg/raw_hdf5/
+imerg/daily_nc/
+*.nc
+*.HDF5
+__pycache__/

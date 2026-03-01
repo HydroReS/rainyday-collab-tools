@@ -1,0 +1,26 @@
+name: IMERG_download_env
+
+# Environment for download_preprocess_IMERG_for_RainyDay.py
+# Downloads and preprocesses NASA GPM IMERG V07 half-hourly HDF5 data
+# into RainyDay-compatible daily NetCDF4 files.
+#
+# Create:  conda env create -f IMERG_download_env.yml
+# Activate: conda activate IMERG_download_env
+# Update:  conda env update -f IMERG_download_env.yml --prune
+
+channels:
+  - conda-forge
+  - defaults
+
+dependencies:
+  - python=3.11
+  - numpy
+  - pandas
+  - xarray
+  - netcdf4          # nc_lib.num2date for IMERG time decoding
+  - h5py             # direct HDF5 file reading
+  - h5netcdf         # xarray HDF5 backend
+  - tqdm             # progress bar
+  - pip
+  - pip:
+    - earthaccess    # NASA Earthdata search and download (conda-forge version lags)
