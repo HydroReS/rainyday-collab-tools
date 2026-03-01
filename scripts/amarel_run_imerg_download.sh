@@ -3,8 +3,8 @@
 #SBATCH --output=logs/imerg_download_%j.out
 #SBATCH --error=logs/imerg_download_%j.err
 #SBATCH --partition=main
-#SBATCH --time=24:00:00
-#SBATCH --cpus-per-task=2
+#SBATCH --time=48:00:00
+#SBATCH --cpus-per-task=1
 #SBATCH --mem=12G
 
 set -euo pipefail
