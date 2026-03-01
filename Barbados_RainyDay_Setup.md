@@ -44,6 +44,10 @@ Downloading only this region (not global) saves significant disk space.
 
 RainyDay has strict format requirements. IMERG data often needs preprocessing.
 
+> **Important:** For this repository, most of Step 2 is already automated by
+> `download_preprocess_IMERG_for_RainyDay.py` (download, clipping, granule stacking,
+> NetCDF4 writing, variable/dimension formatting, and basic validation).
+
 ### 2a. Required output format per file (one file per day)
 
 | Property | Requirement |
@@ -63,7 +67,23 @@ RainyDay has strict format requirements. IMERG data often needs preprocessing.
 3. **Time variable name**: Ensure the time dimension is named `time` (not `Time` or `ntime`)
 4. **Fill values**: Replace fill values (−9999.9) with NaN or a consistent fill
 
-### 2c. Example preprocessing script (Python)
+### 2c. What the provided script already handles automatically
+
+When you run `download_preprocess_IMERG_for_RainyDay.py`, it already does the following:
+
+- Downloads IMERG Final V07 half-hourly granules for the requested date range
+- Clips to your specified domain (`--lat-min/--lat-max`, `--lon-min/--lon-max`)
+- Builds one daily file from 48 half-hourly granules
+- Handles IMERG precipitation variable naming differences (`precipitation` vs `precipitationCal`)
+- Ensures precipitation output dimension order is `(time, latitude, longitude)`
+- Writes NetCDF4 with `time`, `latitude`, `longitude`, and `precipitation`
+- Converts missing/invalid/negative precipitation values to non-negative output
+- Writes a failed-date CSV log for retry workflows
+- Runs a RainyDay compatibility check on the most recent output file
+
+### 2d. Example manual preprocessing script (optional reference)
+
+Use this only if you are building an alternative pipeline outside the provided downloader script.
 
 ```python
 import xarray as xr
@@ -105,12 +125,12 @@ def preprocess_imerg_daily(input_files_30min, output_file):
 ```python
 import netCDF4 as nc
 ds = nc.Dataset("IMERG_20050101.nc")
-print(ds.variables.keys())      # should include: time, lat, lon, precipitation
+print(ds.variables.keys())      # should include: time, latitude, longitude, precipitation
 print(ds["precipitation"].shape) # should be (48, ~120, ~130)
 print(ds["precipitation"].units) # should be mm/hr
 ```
 
-### 2d. Run the downloader script (recommended CLI usage)
+### 2e. Run the downloader script (recommended CLI usage)
 
 From the project root:
 
@@ -229,8 +249,8 @@ This gives ~120 × 130 grid cells at 0.1° — large enough for meaningful SST s
 
     "VARIABLES": {
         "rainname": "precipitation",
-        "latname":  "lat",
-        "longname": "lon"
+        "latname":  "latitude",
+        "longname": "longitude"
     },
 
     "CREATECATALOG":    true,
@@ -331,6 +351,9 @@ Each scenario NetCDF contains:
 
 ## Known Constraints and Potential Issues
 
+For this repository, many preprocessing constraints in the table below are already handled by
+`download_preprocess_IMERG_for_RainyDay.py` when you use the recommended CLI workflow.
+
 | Issue | Detail | Solution |
 |-------|--------|----------|
 | **HDF5 not supported** | RainyDay reads NetCDF4 only | Convert IMERG HDF5 to NetCDF4 during preprocessing |
@@ -346,8 +369,8 @@ Each scenario NetCDF contains:
 ## Recommended Workflow Summary
 
 ```
-1. Download IMERG Final Run HH data for Caribbean (8–20°N, 68–55°W), 2000–present
-2. Preprocess: HDF5 → NetCDF4, concat to daily files, fix dimension order, check units
+1. Run `download_preprocess_IMERG_for_RainyDay.py` for Caribbean (8–20°N, 68–55°W) and your target dates
+2. Use script outputs in `./imerg/daily_nc/` and set `RAINPATH` to `./imerg/daily_nc/IMERG_V07_Barbados_*.nc`
 3. Create Barbados shapefile (WGS84)
 4. Write JSON config
 5. Run Phase 1: CREATECATALOG=true → inspect catalog plots
