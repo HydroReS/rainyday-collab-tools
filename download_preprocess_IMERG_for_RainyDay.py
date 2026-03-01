@@ -49,10 +49,10 @@ REGION_NAME = "Barbados"
 
 # Spatial domain to extract [degrees]
 DOMAIN = {
-    "lat_min":  11.0,
+    "lat_min":  8.0,
     "lat_max": 20.0,
-    "lon_min": -69.0,
-    "lon_max": -54.0,
+    "lon_min": -68.0,
+    "lon_max": -55.0,
 }
 
 # Date range to process (IMERG Final V07 available from June 2000)
