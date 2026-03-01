@@ -2,6 +2,7 @@
 #SBATCH --job-name=imerg_download
 #SBATCH --output=logs/imerg_download_%j.out
 #SBATCH --error=logs/imerg_download_%j.err
+#SBATCH --partition=main
 #SBATCH --time=24:00:00
 #SBATCH --cpus-per-task=2
 #SBATCH --mem=12G

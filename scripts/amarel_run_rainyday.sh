@@ -2,6 +2,7 @@
 #SBATCH --job-name=rainyday
 #SBATCH --output=logs/rainyday_%j.out
 #SBATCH --error=logs/rainyday_%j.err
+#SBATCH --partition=main
 #SBATCH --time=12:00:00
 #SBATCH --cpus-per-task=2
 #SBATCH --mem=16G
