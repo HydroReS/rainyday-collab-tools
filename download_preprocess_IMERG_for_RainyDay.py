@@ -56,8 +56,8 @@ DOMAIN = {
 }
 
 # Date range to process (IMERG Final V07 available from June 2000)
-START_DATE = datetime(2002, 7, 5)
-END_DATE   = datetime(2002, 7, 8)
+START_DATE = datetime(2002, 1, 1)
+END_DATE   = datetime(2024, 1, 1)
 
 # Local directories
 RAW_DIR    = Path("./imerg/raw_hdf5")   # Staging area for HDF5 files
@@ -65,7 +65,7 @@ OUTPUT_DIR = Path("./imerg/daily_nc")   # Destination for daily NetCDF4 files
 
 # Set True to keep the raw HDF5 files after processing (~40 MB/day per granule × 48)
 # Set False to delete them on-the-fly and only keep the processed NetCDF4 (~0.5 MB/day)
-KEEP_RAW = True
+KEEP_RAW = False
 
 # IMERG product identifiers on NASA GES DISC
 IMERG_SHORTNAME = "GPM_3IMERGHH"
