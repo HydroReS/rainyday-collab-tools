@@ -1,0 +1,47 @@
+{
+  "MAINPATH": "/Users/thymios/Downloads/Temp/RainyDay_collab/output/Barbados_RainyDay",
+  "SCENARIONAME": "Barbados_IMERG_72h_fixed",
+  "CATALOGNAME": "Barbados_IMERG_catalog",
+
+  "RAINPATH": "/Users/thymios/Downloads/Temp/RainyDay_collab/imerg/daily_nc/IMERG_*.nc",
+
+  "DOMAINTYPE": "rectangular",
+  "AREA_EXTENT": {
+    "LATITUDE_MIN": 11.0,
+    "LATITUDE_MAX": 20.0,
+    "LONGITUDE_MIN": -69.0,
+    "LONGITUDE_MAX": -54.0
+  },
+
+  "POINTAREA": "watershed",
+  "WATERSHEDSHP": "/Users/thymios/Downloads/Temp/RainyDay_collab/Barbados/barbados_poly.shp",
+
+  "VARIABLES": {
+    "rainname": "precipitation",
+    "latname": "latitude",
+    "longname": "longitude"
+  },
+
+  "CREATECATALOG": "false",
+  "DURATION":  72,
+  "DURATIONCORRECTION": "false",
+  "TIMESEPARATION": 48,
+  "NSTORMS": 20,
+
+  "SCENARIOS": "true",
+  "PADSCENARIOS": 0,
+  "NREALIZATIONS": 10,
+  "NYEARS": 10,
+  "NPERYEAR": 1,
+
+  "TRANSPOSITION": "nonuniform",
+  "RESAMPLING": "poisson",
+  "CALCTYPE": "ams",
+
+  "FREQANALYSIS": "true",
+  "DIAGNOSTICPLOTS": "true",
+  "RETURNLEVELS": [2, 5, 10, 25, 50, 100, 200, 500],
+  "EXCLUDESTORMS": "none",
+  "INCLUDEYEARS": "all",
+  "EXCLUDEMONTHS": []
+}

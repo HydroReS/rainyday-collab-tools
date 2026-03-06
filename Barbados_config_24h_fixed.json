@@ -1,9 +1,9 @@
 {
-  "MAINPATH": "/Users/thymios/Downloads/Temp/RainyDay/output/Barbados_RainyDay",
+  "MAINPATH": "/Users/thymios/Downloads/Temp/RainyDay_collab/output/Barbados_RainyDay",
   "SCENARIONAME": "Barbados_IMERG_24h_fixed",
   "CATALOGNAME": "Barbados_IMERG_catalog",
 
-  "RAINPATH": "/Users/thymios/Downloads/Temp/RainyDay/imerg/daily_nc/IMERG_*.nc",
+  "RAINPATH": "/Users/thymios/Downloads/Temp/RainyDay_collab/imerg/daily_nc/IMERG_*.nc",
 
   "DOMAINTYPE": "rectangular",
   "AREA_EXTENT": {
@@ -14,7 +14,7 @@
   },
 
   "POINTAREA": "watershed",
-  "WATERSHEDSHP": "/Users/thymios/Downloads/Temp/RainyDay/Barbados/barbados_poly.shp",
+  "WATERSHEDSHP": "/Users/thymios/Downloads/Temp/RainyDay_collab/Barbados/barbados_poly.shp",
 
   "VARIABLES": {
     "rainname": "precipitation",
@@ -22,13 +22,13 @@
     "longname": "longitude"
   },
 
-  "CREATECATALOG": "false",
+  "CREATECATALOG": "true",
   "DURATION": 24,
   "DURATIONCORRECTION": "false",
   "TIMESEPARATION": 48,
   "NSTORMS": 20,
 
-  "SCENARIOS": "true",
+  "SCENARIOS": "false",
   "PADSCENARIOS": 0,
   "NREALIZATIONS": 10,
   "NYEARS": 10,

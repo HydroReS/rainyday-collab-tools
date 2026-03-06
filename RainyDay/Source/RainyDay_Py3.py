@@ -131,7 +131,7 @@ if(len(sys.argv))<=1:
     sys.exit("You didn't specify a parameter file")
     
 try:
-    parameterfile=sys.argv[1]
+    parameterfile=os.path.abspath(sys.argv[1])
     print("reading in the parameter file...")
     ### Cardinfo takes in the  'JSON' file parameters
     with open(parameterfile, 'r') as read_file:
@@ -1278,6 +1278,8 @@ if CreateCatalog:
                                               cattime,latrange,lonrange,\
                                                   storm_name,catmask,parameterfile,domainmask,\
                                                      nstorms,catduration,storm_num=int(i),timeresolution=rainprop.timeres)
+            else:
+                raise
     end = time.time()   
     print(f"catalog timer: {(end-proc_start)/60.:0.2f} minutes")
 
@@ -1384,6 +1386,9 @@ if nstorms<nstorms_cat:
 else:    
     nstorms= len(stormlist)
 stormnumber = [RainyDay.extract_storm_number(storm, catalogname) for storm in stormlist]   ## We can use this variable somewhere.
+
+if nstorms == 0:
+    sys.exit("No storms are available after filtering. Check NSTORMS, EXCLUDESTORMS, INCLUDEYEARS, and EXCLUDEMONTHS.")
 
 
 
@@ -1617,6 +1622,9 @@ if DoDiagnostics:
     #     redoing plotting to be consistent with 1 storm per file configuration
     # =============================================================================
     
+    mu_t = None
+    std_t = None
+    M2 = None
     for i in np.arange(0,nstorms):
         plotrain,plottime,_,_,_,_,_,_,_,_,_ = RainyDay.readcatalog(stormlist[i])
         plotrain = plotrain.where(plotrain >= 0) ##Replace the missing flags
@@ -1628,12 +1636,12 @@ if DoDiagnostics:
         if i == 0:
             mu_t = temprain    
             M2 = temprain * 0.  # Initialize M2 as a DataArray with the same shape as temprain but all values set to 0.
+            std_t = temprain * 0.
         else:
             oldmu = mu_t
             mu_t = oldmu + (temprain - oldmu) / (i + 1)
             M2 = M2 + (temprain - oldmu) * (temprain - mu_t)
-            if i > 1:
-                std_t = np.sqrt(M2 / i)
+            std_t = np.sqrt(M2 / i)
         
         if DoDiagnostics_stats == False:
             print("plotting diagnostics for storm "+str(i+1)+" out of "+str(nstorms))
